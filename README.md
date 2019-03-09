@@ -1,5 +1,3 @@
-# File To C Array
-
 ## Description
 
 **File To C Array** is a tool that generates a C array from the contents of any file. Such arrays can be used as a way of embedding resource files into an executable binary, gaining access to the resource files without having to use platform-dependent code. The tool requires [Nana C++ Library](https://github.com/cnjinhao/nana) in order to build, but you can download a binary release below.
