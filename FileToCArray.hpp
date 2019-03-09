@@ -10,8 +10,6 @@
 #include <thread>
 #include <atomic>
 
-using std::cout;
-using std::endl;
 
 class ftca_form : public nana::form
 {
