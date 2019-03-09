@@ -5,7 +5,6 @@
 #include <nana/gui/widgets/progress.hpp>
 #include <nana/gui/msgbox.hpp>
 
-#include <iostream>
 #include <fstream>
 #include <thread>
 #include <atomic>
