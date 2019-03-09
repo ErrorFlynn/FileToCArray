@@ -4,7 +4,7 @@
 
 ![FileToCArray](https://user-images.githubusercontent.com/20293505/54069428-ea155300-4225-11e9-8288-3d9c7ddbccf9.png)
 
-Protip: if the output file the you choose is the same as the input file, it will automatically get renamed like in the screenshot above.
+Protip: if the output file that you choose is the same as the input file, it will automatically get renamed like in the screenshot above.
 
 ## Windows binary
 https://github.com/ErrorFlynn/FileToCArray/releases/download/v1.0/FileToCArray.exe
