@@ -143,7 +143,6 @@ public:
 			else
 			{
 				btn_gen.caption("Abort");
-				nana::API::refresh_window(btn_gen);
 				std::thread([this]
 				{
 					try { file_to_c_array(); }
