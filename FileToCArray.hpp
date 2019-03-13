@@ -28,8 +28,7 @@ public:
 		nana::place &plc{get_place()};
 		const auto bg{nana::colors::white};
 
-		nana::API::track_window_size(handle(), {600, 185}, false);
-		caption("File To C Array");
+		caption("File To C Array v1.1");
 		bgcolor(bg);
 
 		div("vert margin=15 < weight=20 <l_in weight=70><weight=15><l_inpath><weight=15><btn_in weight=20> >"
@@ -86,6 +85,22 @@ public:
 		prog.scheme().gradient_fgcolor = nana::color{"#b7d3db"};
 		prog.scheme().background = nana::color{"#e4e4e4"};
 		prog.scheme().foreground = nana::color{"#64a3b5"};
+		prog.typeface({typeface().name(), 11, nana::paint::font::font_style{800}});
+		nana::drawing{prog}.draw([this] (nana::paint::graphics &graph)
+		{
+			auto caption{prog.caption()};
+			if(!caption.empty())
+			{
+				auto tsize{graph.text_extent_size(caption)};
+				auto gsize{graph.size()};
+				nana::point pos{0,0};
+				if(tsize.width < gsize.width)
+					pos.x = gsize.width/2 - tsize.width/2;
+				if(tsize.height < gsize.height)
+					pos.y = gsize.height/2 - tsize.height/2;
+				graph.string(pos, caption, nana::colors::white);
+			}
+		});
 		plc["prog"] << prog;
 
 		collocate();
@@ -100,8 +115,8 @@ public:
 				inpath = res.front();
 				if(inpath == outpath)
 				{
-					outpath.replace_filename(std::wstring{L"arr_"} + outpath.filename().c_str());
-					outpath.replace_extension(L"hpp");
+					outpath.replace_filename("arr_" + outpath.filename().u8string());
+					outpath.replace_extension("hpp");
 					label_path_caption(l_outpath, outpath);
 				}
 				label_path_caption(l_inpath, inpath);
@@ -120,8 +135,8 @@ public:
 				outpath = res.front();
 				if(inpath == outpath)
 				{
-					outpath.replace_filename(std::wstring{L"arr_"} + outpath.filename().c_str());
-					outpath.replace_extension(L"hpp");
+					outpath.replace_filename("arr_" + outpath.filename().u8string());
+					outpath.replace_extension("hpp");
 					label_path_caption(l_outpath, outpath);
 				}
 				label_path_caption(l_outpath, outpath);
@@ -218,10 +233,11 @@ private:
 		while(insize % width) width /= 2;
 		auto buf{std::make_unique<char[]>(width)};
 		const int prog_steps{568};
+		prog.caption("");
 		prog.amount(prog_steps);
 		prog.value(0);
 		uintmax_t prog_step{0}, step_treshold{0};
-		if(insize >= 10000)
+		if(insize >= 568)
 		{
 			prog_step = insize / prog_steps;
 			step_treshold = prog_step;
@@ -232,7 +248,7 @@ private:
 		std::ofstream outfile{outpath};
 		if(!outfile.good()) throw(std::exception{"Failed to open the output file!"});
 
-		auto name{"arr_" + inpath.filename().generic_u8string()};
+		auto name{"arr_" + inpath.filename().u8string()};
 		for(auto &c : name) if(!isalnum(c)) c = '_';
 			
 		outfile << "#include <cstdint>\n\n";
@@ -260,6 +276,7 @@ private:
 				prog.inc();
 			}
 			if(abort) { working = false; return; }
+			if(outfile.bad()) throw(std::exception{"Failed trying to write to the output file!"});
 		}
 		
 		if(infile.bad()) throw(std::exception{"Failed trying to read the input file!"});
@@ -268,6 +285,8 @@ private:
 		if(line_chars_max) outfile << '\n';
 		outfile << "};";
 		btn_gen.caption(gen_text);
+		prog.caption("Operation completed.");
+		prog.value(prog_steps);
 		working = false;
 	}
 
