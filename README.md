@@ -8,3 +8,27 @@ Protip: if the output file that you choose is the same as the input file, it wil
 
 ## Windows binary
 https://github.com/ErrorFlynn/FileToCArray/releases/download/v1.1/FileToCArray_11.7z
+
+## Building
+
+### GNU GCC
+
+```
+g++ --std=c++17 FileToCArray_main.cpp -lnana -lpng -ljpeg -o FileToCArray
+```
+
+#### Building on Windows with MinGW/GCC
+
+If compiling on Windows you will also need to link to some Windows standard libraries:
+
+```
+g++ --std=c++17 FileToCArray_main.cpp -lnana -lpng -ljpeg -lgdi32 -lcomdlg32 -mwindows -o FileToCArray
+```
+
+To add an icon resource do the following:
+
+```
+windres icon_resource.rc -o icon_resource.o
+
+g++ --std=c++17 FileToCArray_main.cpp icon_resource.o -lnana -lpng -ljpeg -lgdi32 -lcomdlg32 -mwindows -o FileToCArray
+```

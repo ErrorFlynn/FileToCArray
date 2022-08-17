@@ -227,7 +227,11 @@ private:
 	{
 		working = true;
 		if(!std::filesystem::exists(inpath))
+#ifdef _MSC_VER
 			throw(std::exception{"Input file does not exist!"});
+#else
+			throw std::runtime_error("Input file does not exist!");
+#endif
 		auto insize = std::filesystem::file_size(inpath);
 		unsigned width = sizeof(uint64_t);
 		while(insize % width) width /= 2;
@@ -244,9 +248,19 @@ private:
 		}
 
 		std::ifstream infile{inpath, std::ios::binary};
-		if(!infile.good()) throw(std::exception{"Failed to open the input file!"});
+		if(!infile.good())
+#ifdef _MSC_VER
+			throw(std::exception{"Failed to open the input file!"});
+#else
+			throw std::runtime_error("Failed to open the input file!");
+#endif
 		std::ofstream outfile{outpath};
-		if(!outfile.good()) throw(std::exception{"Failed to open the output file!"});
+		if(!outfile.good())
+#ifdef _MSC_VER
+			throw(std::exception{"Failed to open the output file!"});
+#else
+			throw std::runtime_error("Failed to open the output file!");
+#endif
 
 		auto name{"arr_" + inpath.filename().u8string()};
 		for(auto &c : name) if(!isalnum(c)) c = '_';
@@ -276,10 +290,20 @@ private:
 				prog.inc();
 			}
 			if(abort) { working = false; return; }
-			if(outfile.bad()) throw(std::exception{"Failed trying to write to the output file!"});
+			if(outfile.bad())
+#ifdef _MSC_VER
+				throw(std::exception{"Failed trying to write to the output file!"});
+#else
+				throw std::runtime_error("Failed trying to write to the output file!");
+#endif
 		}
 		
-		if(infile.bad()) throw(std::exception{"Failed trying to read the input file!"});
+		if(infile.bad())
+#ifdef _MSC_VER
+			throw(std::exception{"Failed trying to read the input file!"});
+#else
+			throw std::runtime_error("Failed trying to read the input file!");
+#endif
 
 		outfile.seekp(static_cast<std::streamoff>(outfile.tellp())-1);
 		if(line_chars_max) outfile << '\n';
