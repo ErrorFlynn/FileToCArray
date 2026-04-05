@@ -18,8 +18,6 @@ class ftca_form : public themed_form
 
 	std::filesystem::path inpath, outpath;
 	std::vector<std::filesystem::path> inpaths;
-	int line_chars_max {120};
-	std::atomic<bool> working {false}, abort {false};
 	const char *gen_text {"Generate C array"};
 	int shadow_value {0};
 
@@ -195,7 +193,6 @@ public:
 					catch(std::exception &e)
 					{
 						btn_gen.caption(gen_text);
-						working = false;
 						auto p_title_and_text {new std::pair<std::string, std::string> {"Error", e.what()}};
 						PostMessage(hwnd, WM_MSGBOX, MB_ICONERROR, reinterpret_cast<WPARAM>(p_title_and_text));
 					}
@@ -205,11 +202,8 @@ public:
 
 		events().unload([this]
 		{
-			if(working)
-			{
-				abort = true;
-				while(working) std::this_thread::sleep_for(std::chrono::milliseconds {75});
-			}
+			if(ftca.working())
+				ftca.abort();
 		});
 
 		enable_dropfiles(true);
