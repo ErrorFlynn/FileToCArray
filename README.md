@@ -16,7 +16,7 @@ After years of neglect, I have finally turned my attention back to this project,
 - GUI scales with system scale factor
 - GUI follows system color theme (dark/light)
 - window accepts files dragged and dropped onto it
-- multiple files can queued up
+- multiple files can be queued up
 
 ### The GUI code is now decoupled from the array-generating code
 
